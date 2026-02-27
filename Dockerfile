@@ -1,11 +1,18 @@
-FROM python:3.11-slim
+FROM jenkins/inbound-agent:latest
 
-WORKDIR /app
+USER root
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    python3 python3-pip \
+    ca-certificates curl \
+ && rm -rf /var/lib/apt/lists/*
 
-COPY . .
+RUN curl -fsSL https://download.docker.com/linux/debian/gpg | gpg --dearmor -o /usr/share/keyrings/docker.gpg \
+ && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker.gpg] https://download.docker.com/linux/debian bookworm stable" \
+    > /etc/apt/sources.list.d/docker.list \
+ && apt-get update && apt-get install -y --no-install-recommends docker-ce-cli \
+ && rm -rf /var/lib/apt/lists/*
 
-EXPOSE 5000
-CMD ["python", "-m", "app.app"]
+USER jenkins
+
+ENTRYPOINT ["/usr/local/bin/jenkins-agent"]
