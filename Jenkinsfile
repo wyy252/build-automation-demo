@@ -52,15 +52,18 @@ pipeline {
         stage('Run Container (Smoke Test)') {
             steps {
                 sh '''
-                  # stop old container if exists
-                  docker rm -f ${CONTAINER_NAME} || true
+                set -e
 
-                  # run new one
-                  docker run -d --name ${CONTAINER_NAME} -p ${APP_PORT}:5000 ${IMAGE_NAME}:latest
+                docker rm -f build-automation-demo-container || true
 
-                  # simple smoke test: hit /health
-                  sleep 2
-                  curl -fsS http://localhost:${APP_PORT}/health
+                docker run -d \
+                    --name build-automation-demo-container \
+                    --network jenkins-net \
+                    build-automation-demo:latest
+
+                sleep 2
+
+                curl -fsS http://build-automation-demo-container:5000/health
                 '''
             }
         }
