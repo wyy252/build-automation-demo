@@ -76,6 +76,5 @@ pipeline {
         success {
             echo "Build + test + docker run succeeded."
         }
-        }
     }
 }
