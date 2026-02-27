@@ -22,10 +22,10 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh '''
-                  python --version
-                  pip --version
-                  pip install --upgrade pip
-                  pip install -r requirements.txt
+                python3 --version
+                pip3 --version
+                pip3 install --upgrade pip
+                pip3 install -r requirements.txt
                 '''
             }
         }
