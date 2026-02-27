@@ -68,6 +68,7 @@ pipeline {
     post {
         always {
             echo "Pipeline finished (success or failure)."
+            sh 'docker rm -f ${CONTAINER_NAME} || true'
         }
         failure {
             echo "Build blocked due to failure (e.g., tests failed)."
@@ -75,10 +76,6 @@ pipeline {
         success {
             echo "Build + test + docker run succeeded."
         }
-        cleanup {
-            // optional: keep container running for demo, so we don't remove it here
-            // If you prefer cleanup, uncomment the next line:
-            // sh 'docker rm -f ${CONTAINER_NAME} || true'
         }
     }
 }
