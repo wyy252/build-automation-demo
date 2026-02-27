@@ -9,7 +9,7 @@ def client():
 
 def test_home_returns_success_message(client):
     resp = client.get("/")
-    assert resp.status_code == 201
+    assert resp.status_code == 200
     assert b"Build Automation Demo Successful!" in resp.data
 
 def test_health_endpoint(client):
@@ -19,4 +19,4 @@ def test_health_endpoint(client):
 
 def test_add_helper_should_add_numbers():
     app = create_app()
-    assert app.add(1, 2) == 3  # type: ignore[attr-defined]
+    assert app.add(1, 2) == 3  
