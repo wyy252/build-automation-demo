@@ -9,7 +9,7 @@ def client():
 
 def test_home_returns_success_message(client):
     resp = client.get("/")
-    assert resp.status_code == 200
+    assert resp.status_code == 201
     assert b"Build Automation Demo Successful!" in resp.data
 
 def test_health_endpoint(client):
